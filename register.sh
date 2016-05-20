@@ -1,3 +1,5 @@
+#!/bin/sh
+
 set +x
 
 #$POST_USER - env must be set 
