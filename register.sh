@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#set +x
-set -x
+set +x
 
 #$POST_USER - env must be set 
 #$POST_KEY - env must be set 
