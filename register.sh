@@ -62,7 +62,7 @@ import hudson.plugins.sshslaves.SSHLauncher
 
 sshLauncher = new SSHLauncher(
                   '${SLAVE_IP}',
-                  '${SLAVE_PORT}',
+                  ${SLAVE_PORT},
                   '${CREDENTIALS_ID}',
                   '',
                   '',
