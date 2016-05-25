@@ -7,11 +7,11 @@ set +x
 #$MASTER - env must be set 
 #$CREDENTIALS_ID - env must be set 
 #$SLAVE_IP - env must be set
-#$SLAVE_EXECUTORS - env must be set
 
-ACTION=${1:-register}
-SLAVE_LABELS="docker docker-${HOSTNAME} docker-latest"
-SLAVE_NAME="docker-${HOSTNAME}"
+ACTION=${1:-deregister}
+SLAVE_LABELS="${SLAVE_LABELS:-docker docker-${HOSTNAME} docker-latest}"
+SLAVE_NAME="${SLAVE_NAME:-docker-${HOSTNAME}}"
+SLAVE_EXECUTORS=${SLAVE_EXECUTORS:-2}
 JENKINS_HOME="${JENKINS_HOME:-/var/jenkins}"
 
 function post_to_master () {
