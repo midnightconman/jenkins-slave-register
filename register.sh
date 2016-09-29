@@ -4,7 +4,7 @@ set +x
 
 #$POST_USER - env must be set 
 #$POST_KEY - env must be set 
-#$MASTER - env must be set 
+#$MASTERS - env must be set
 #$CREDENTIALS_ID - env must be set 
 #$SLAVE_IP - env must be set
 
@@ -114,22 +114,28 @@ fi
 if [ "$1" == "register" ]
 then
 
-  add_or_remove add
-  build_data
+  for MASTER in ${MASTERS}
+  do
+    add_or_remove add
+    build_data
 
-  echo -e "\n## Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
-  echo -n "Response Status Code: "
-  post_to_master "true"
-  echo -e "\n## Registration Complete ##\n"
+    echo -e "\n## Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
+    echo -n "Response Status Code: "
+    post_to_master "true"
+    echo -e "\n## Registration Complete ##\n"
+  done
 
 else
 
-  add_or_remove remove
-  build_data
+  for MASTER in ${MASTERS}
+  do
+    add_or_remove remove
+    build_data
 
-  echo -e "\n## De-Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
-  echo -n "Response Status Code: "
-  post_to_master "true"
-  echo -e "\n## De-Registrataion Complete ##\n"
+    echo -e "\n## De-Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
+    echo -n "Response Status Code: "
+    post_to_master "true"
+    echo -e "\n## De-Registrataion Complete ##\n"
+  done
 
 fi
