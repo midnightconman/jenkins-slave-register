@@ -86,36 +86,37 @@ function build_data () {
 
 }
 
-DATA="script=
-for ( slave in hudson.model.Hudson.instance.slaves ) {
-  if ( '${SLAVE_NAME}' == slave.name ) {
-    println( 'true' ) 
+for MASTER in ${MASTERS}
+do
+
+  DATA="script=
+  for ( slave in hudson.model.Hudson.instance.slaves ) {
+    if ( '${SLAVE_NAME}' == slave.name ) {
+      println( 'true' ) 
+    }
   }
-}
-"
+  "
 
-echo -e "\n## Checking if slave (${SLAVE_NAME}) already exists on master (${MASTER}) ##"
+  echo -e "\n## Checking if slave (${SLAVE_NAME}) already exists on master (${MASTER}) ##"
 
-SLAVE_EXISTS=$( post_to_master "false" )
+  SLAVE_EXISTS=$( post_to_master "false" )
 
-if [ "${SLAVE_EXISTS}" == "true" ]
-then
+  if [ "${SLAVE_EXISTS}" == "true" ]
+  then
 
-REMOVE_NODE="
-for ( slave in hudson.model.Hudson.instance.slaves ) {
-  if ( '${SLAVE_NAME}' == slave.name ) {
-    jenkins.model.Jenkins.instance.removeNode(slave) 
+  REMOVE_NODE="
+  for ( slave in hudson.model.Hudson.instance.slaves ) {
+    if ( '${SLAVE_NAME}' == slave.name ) {
+      jenkins.model.Jenkins.instance.removeNode(slave) 
+    }
   }
-}
-"
+  "
 
-fi
+  fi
 
-if [ "$1" == "register" ]
-then
+  if [ "$1" == "register" ]
+  then
 
-  for MASTER in ${MASTERS}
-  do
     add_or_remove add
     build_data
 
@@ -123,18 +124,16 @@ then
 
     echo -n "Response Status Code: "
     STATUS=$( post_to_master "true" )
-    if [ "$STATUS" != "200" ]
+    echo $STATUS
+    if [ "$STATUS" != "\"200\"" ]
     then
       exit 1
     fi
 
     echo -e "\n## Registration Complete ##\n"
-  done
 
-else
+  else
 
-  for MASTER in ${MASTERS}
-  do
     add_or_remove remove
     build_data
 
@@ -142,12 +141,14 @@ else
     echo -n "Response Status Code: "
 
     STATUS=$( post_to_master "true" )
-    if [ "$STATUS" != "200" ]
+    echo $STATUS
+    if [ "$STATUS" != "\"200\"" ]
     then
       exit 1
     fi
 
     echo -e "\n## De-Registrataion Complete ##\n"
-  done
 
-fi
+  fi
+
+done
