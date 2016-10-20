@@ -120,8 +120,14 @@ then
     build_data
 
     echo -e "\n## Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
+
     echo -n "Response Status Code: "
-    post_to_master "true"
+    STATUS=$( post_to_master "true" )
+    if [ "$STATUS" != "200" ]
+    then
+      exit 1
+    fi
+
     echo -e "\n## Registration Complete ##\n"
   done
 
@@ -134,7 +140,13 @@ else
 
     echo -e "\n## De-Registering slave (${SLAVE_NAME}) with master (${MASTER}) ##"
     echo -n "Response Status Code: "
-    post_to_master "true"
+
+    STATUS=$( post_to_master "true" )
+    if [ "$STATUS" != "200" ]
+    then
+      exit 1
+    fi
+
     echo -e "\n## De-Registrataion Complete ##\n"
   done
 
