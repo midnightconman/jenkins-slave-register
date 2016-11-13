@@ -23,7 +23,8 @@ function post_to_master () {
     RESPONSE=""
   fi
 
-  curl -L -s -S ${RESPONSE} -X POST \
+  curl -LsS ${RESPONSE} -X POST \
+    -o /dev/null \
     --data-binary "${DATA}" \
     --user "${POST_USER}:${POST_KEY}" \
     "http://${MASTER}/scriptText/"
